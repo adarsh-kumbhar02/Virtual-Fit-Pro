@@ -1,0 +1,187 @@
+@font-face {
+  font-family: "Rajdhani-Regular";
+  src: url("../../fonts/Rajdhani-Medium.ttf") format("truetype");
+}
+
+/* ===============================
+   MAIN DASHBOARD
+================================= */
+.MainDash {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%;
+  padding: 20px;
+  font-family: "Rajdhani-Regular";
+}
+
+/* ===============================
+   TITLE
+================================= */
+.MainDash h1 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+/* DARK TITLE GLOW */
+.dark .MainDash h1 {
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+}
+
+/* ===============================
+   TABLE CONTAINER
+================================= */
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 16px;
+  padding: 15px;
+
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(10px);
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* DARK MODE TABLE */
+.dark .tableContainer {
+  background: rgba(15, 23, 42, 0.7);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+/* ===============================
+   HEADER (TITLE + ICON)
+================================= */
+.tableHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* TITLE */
+.tableTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+
+  position: relative;
+  padding-bottom: 8px;
+
+  line-height: 1; /* 🔥 alignment fix */
+}
+
+/* UNDERLINE EFFECT */
+.tableTitle::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #a855f7, #ec4899);
+  transform: translateX(-50%);
+  border-radius: 10px;
+}
+
+/* DARK MODE GLOW */
+.dark .tableTitle {
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+}
+
+/* ===============================
+   SVG ICON
+================================= */
+.svgIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+
+  filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.6));
+  transition: all 0.3s ease;
+}
+
+/* PERFECT ALIGNMENT */
+.svgIcon svg {
+  display: block;
+  transform: translateY(2px); /* adjust 1–3px if needed */
+}
+
+/* HOVER ANIMATION */
+.tableTitle:hover .svgIcon {
+  transform: scale(1.2) translateY(-2px);
+}
+
+/* ===============================
+   TABLE STYLE
+================================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+th {
+  padding: 14px;
+  text-align: left;
+}
+
+td {
+  padding: 14px;
+  font-size: 14px;
+}
+
+/* ROW HOVER */
+tbody tr {
+  transition: 0.2s ease;
+}
+
+tbody tr:hover {
+  background: rgba(0,0,0,0.05);
+  transform: scale(1.01);
+}
+
+.dark tbody tr:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+/* ===============================
+   BADGES
+================================= */
+td span {
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+/* ===============================
+   RESPONSIVE
+================================= */
+@media screen and (max-width: 1200px) {
+  .MainDash {
+    gap: 15px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .MainDash {
+    align-items: center;
+    padding: 10px;
+  }
+
+  .tableContainer {
+    width: 100%;
+  }
+}

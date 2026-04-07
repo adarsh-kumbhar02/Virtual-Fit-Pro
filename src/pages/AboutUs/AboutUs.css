@@ -1,0 +1,59 @@
+@font-face {
+  font-family: "Rajdhani-Regular";
+  src: url("../../fonts//Rajdhani-Medium.ttf") format("truetype");
+}
+
+.AboutUs {
+  display: flex;
+  flex-direction: column;
+  font-family: "Rajdhani-Regular";
+  font-size: larger;
+  justify-content: space-evenly;
+  margin: 35px;
+}
+
+.aboutus_desc {
+  margin-inline: 100px;
+}
+
+.AboutUs .image_container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+  margin-inline: 100px;
+}
+
+.AboutUs .image_container ._card img {
+  width: 150px;
+  height: 150px;
+  margin: 15px;
+}
+.AboutUs .image_container ._card ._gmail {
+  margin-right: 5px;
+}
+.AboutUs .image_container ._card ._github {
+  margin-right: 5px;
+}
+.AboutUs .image_container ._card ._linkedin {
+  margin-right: 5px;
+}
+
+@media screen and (max-width: 1024px) {
+  .AboutUs .image_container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .AboutUs .image_container ._card {
+    margin-bottom: 30px;
+  }
+
+  .AboutUs .aboutus_heading h2 {
+    font-size: 30px;
+  }
+  .AboutUs .aboutus_desc p {
+    font-size: 17px;
+  }
+  .AboutUs .aboutus_list li {
+    font-size: 17px;
+  }
+}

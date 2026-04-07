@@ -1,0 +1,194 @@
+/* ===============================
+   SIDEBAR (PREMIUM VERSION)
+================================= */
+.Sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  padding: 15px 10px;
+  gap: 15px;
+
+  border-radius: 20px;
+}
+
+/* ===============================
+   LOGO
+================================= */
+/* ===============================
+   LOGO (UPGRADED)
+================================= */
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 25px;
+  gap: 8px;
+}
+
+/* IMAGE */
+.logo img {
+  width: 130px;   /* 🔥 increased */
+  height: auto;
+
+  object-fit: contain;
+
+  transition: 0.3s;
+}
+
+/* hover effect */
+.logo img:hover {
+  transform: scale(1.05);
+}
+
+/* TEXT */
+.logo span {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.logo span span {
+  color: var(--pink);
+}
+/* glow effect (dark mode) */
+.dark .logo img {
+  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5));
+}
+/* ===============================
+   MENU
+================================= */
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ===============================
+   MENU ITEM
+================================= */
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 12px 15px;
+  border-radius: 12px;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  font-weight: 500;
+}
+
+/* ICON */
+.menuItem svg {
+  font-size: 20px;
+}
+
+/* ===============================
+   HOVER EFFECT 🔥
+================================= */
+.menuItem:hover {
+  background: rgba(255, 145, 157, 0.2);
+  transform: translateX(6px);
+}
+
+/* ===============================
+   ACTIVE ITEM 🔥🔥
+================================= */
+.active {
+  background: rgba(255, 145, 157, 0.3);
+  border-left: 4px solid #ff8999;
+  box-shadow: 0 0 10px rgba(255, 145, 157, 0.4);
+}
+
+/* ===============================
+   LOGOUT BUTTON 🔥
+================================= */
+.logout {
+  margin-top: auto;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 15px;
+  border-radius: 12px;
+
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* logout hover */
+.logout:hover {
+  background: rgba(255, 0, 0, 0.15);
+  transform: scale(1.05);
+}
+
+/* ===============================
+   DARK MODE SIDEBAR 🔥
+================================= */
+.dark .menuItem {
+  color: #cbd5f5;
+}
+
+.dark .menuItem:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.dark .active {
+  background: rgba(168, 85, 247, 0.2);
+  border-left: 4px solid #a855f7;
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+}
+
+.dark .logout:hover {
+  background: rgba(255, 0, 0, 0.2);
+}
+
+/* ===============================
+   RESPONSIVE
+================================= */
+@media screen and (max-width: 1200px) {
+  .menuItem span {
+    display: none;
+  }
+
+  .logo {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .Sidebar {
+    position: fixed;
+    z-index: 100;
+    left: 0;   
+    top: 0;
+    width: 60%;
+    height: 100%;
+
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(10px);
+  }
+
+  .dark .Sidebar {
+    background: rgba(15,23,42,0.95);
+  }
+
+  .menuItem span {
+    display: block;
+  }
+
+  .logo {
+    display: flex;
+  }
+}.Sidebar {
+  width: 100%;   /* important */
+}
+.SidebarWrapper {
+  width: 100%;
+}

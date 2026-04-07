@@ -1,0 +1,234 @@
+:root {
+  --yellow: linear-gradient(180deg, #f8d49a -146.42%, #fad79d -46.42%);
+  --orange: #fca61f;
+  --black: #242d49;
+  --gray: #788097;
+  --purple: linear-gradient(180deg, #bb67ff 0%, #c484f3 100%);
+  --pink: #ff919d;
+  --activeItem: #f799a354;
+
+  /* LIGHT */
+  --bg-light: linear-gradient(120deg, #ffe1bc, #ffced1, #f3c6f1);
+  --text-light: #242d49;
+  --card-light: rgba(255,255,255,0.7);
+
+  /* DARK (🔥 IMPROVED) */
+  --bg-dark: linear-gradient(135deg, #0f172a, #020617);
+  --text-dark: #e2e8f0;
+  --card-dark: rgba(15, 23, 42, 0.75);
+}
+
+/* ===============================
+   RESET
+================================= */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+/* ===============================
+   APP
+================================= */
+.App {
+  min-height: 100vh;
+  background: var(--bg-light);
+  color: var(--text-light);
+
+  background-size: 200% 200%;
+  animation: gradientMove 10s ease infinite;
+}
+.App::before {
+  content: "";
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #ff8999, transparent);
+  top: -100px;
+  right: -100px;
+  opacity: 0.4;
+  filter: blur(100px);
+  z-index: 0;
+}
+
+.App::after {
+  content: "";
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #bb67ff, transparent);
+  bottom: -100px;
+  left: -100px;
+  opacity: 0.4;
+  filter: blur(100px);
+  z-index: 0;
+}
+
+/* DARK MODE */
+.dark {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+.dark .App::before {
+  background: radial-gradient(circle, #7c3aed, transparent);
+  opacity: 0.3;
+}
+
+.dark .App::after {
+  background: radial-gradient(circle, #ec4899, transparent);
+  opacity: 0.3;
+}
+
+/* ===============================
+   LAYOUT
+================================= */
+.AppGlass {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 20px;
+
+  width: 100%;
+  min-height: 100vh;
+
+  padding: 20px;
+
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(20px);
+
+  box-shadow: 
+    0 10px 30px rgba(0,0,0,0.1),
+    inset 0 0 20px rgba(255,255,255,0.2);
+
+  position: relative;
+  z-index: 1;
+}
+
+/* ===============================
+   SIDEBAR
+================================= */
+.AppGlass > :first-child {
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 30px);
+
+  border-radius: 20px;
+  background: var(--card-light);
+  padding: 10px;
+}
+
+/* ===============================
+   MAIN CONTENT
+================================= */
+.AppGlass > :last-child {
+  height: calc(100vh - 30px);
+  overflow-y: auto;
+
+  padding: 15px 20px;
+  border-radius: 20px;
+
+  background: var(--card-light);
+}
+
+/* ===============================
+   DARK MODE COMPONENTS
+================================= */
+.dark .AppGlass > :first-child,
+.dark .AppGlass > :last-child {
+  background: var(--card-dark);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* SIDEBAR ITEMS */
+.dark .menuItem {
+  color: #cbd5f5;
+}
+
+.dark .menuItem:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+/* ACTIVE ITEM */
+.dark .active {
+  background: rgba(255, 105, 180, 0.15);
+  border-left: 4px solid #ff4ecd;
+}
+
+/* ===============================
+   CARDS (🔥 PREMIUM LOOK)
+================================= */
+.card {
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+}
+
+.dark .card {
+  box-shadow: 0px 10px 30px rgba(0,0,0,0.7);
+}
+
+.dark .card:hover {
+  box-shadow: 0px 20px 50px rgba(168, 85, 247, 0.25);
+}
+
+/* ===============================
+   TABLE
+================================= */
+.dark table {
+  background: rgba(255,255,255,0.04);
+  color: #e2e8f0;
+}
+
+/* ===============================
+   SCROLLBAR
+================================= */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #ff8999, #bb67ff);
+  border-radius: 10px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #7c3aed, #ec4899);
+}
+
+/* ===============================
+   RESPONSIVE
+================================= */
+@media screen and (max-width: 1200px) {
+  .AppGlass {
+    grid-template-columns: 10% auto;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .AppGlass {
+    grid-template-columns: 1fr;
+  }
+
+  .AppGlass > :first-child {
+    position: relative;
+    height: auto;
+  }
+
+  .AppGlass > :last-child {
+    height: auto;
+  }
+}
+
+/* ===============================
+   BACKGROUND ANIMATION
+================================= */
+@keyframes gradientMove {
+  0% { background-position: 0% }
+  50% { background-position: 100% }
+  100% { background-position: 0% }
+}
