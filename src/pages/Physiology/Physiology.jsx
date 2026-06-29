@@ -1,44 +1,88 @@
-import React, { useState } from "react";
+import "./Physiology.css";
+import { useNavigate } from "react-router-dom";
 
-export default function Physiology() {
-  const [weight, setWeight] = useState("");
-  const [height, setHeight] = useState("");
-  const [bmi, setBmi] = useState(null);
+function Physiology() {
 
-  const calculateBMI = () => {
-    const h = height / 100;
-    const result = (weight / (h * h)).toFixed(2);
-    setBmi(result);
-  };
+  const navigate = useNavigate();
+
+  const conditions = [
+    {
+      title: "Lower Back Pain",
+      icon: "🦴",
+      active: true,
+      route: "/lower-back-assessment",
+    },
+    {
+      title: "Neck Pain",
+      icon: "💆",
+      active: false,
+    },
+    {
+      title: "Knee Pain",
+      icon: "🦵",
+      active: false,
+    },
+    {
+      title: "Shoulder Pain",
+      icon: "💪",
+      active: false,
+    },
+    {
+      title: "Weight Loss",
+      icon: "⚖️",
+      active: false,
+    },
+    {
+      title: "Muscle Gain",
+      icon: "🏋️",
+      active: false,
+    },
+  ];
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Physiology Module</h1>
+    <div className="physiologyPage">
 
-      <h3>BMI Calculator</h3>
+      <h1>🩺 AI Physiotherapy Assistant</h1>
 
-      <input
-        placeholder="Weight (kg)"
-        value={weight}
-        onChange={(e) => setWeight(e.target.value)}
-      />
+      <p>
+        Choose your condition to receive an AI-guided
+        rehabilitation plan.
+      </p>
 
-      <input
-        placeholder="Height (cm)"
-        value={height}
-        onChange={(e) => setHeight(e.target.value)}
-      />
+      <div className="conditionGrid">
 
-      <button onClick={calculateBMI}>Calculate</button>
+        {conditions.map((item, index) => (
 
-      {bmi && <h3>Your BMI: {bmi}</h3>}
+          <div
+            key={index}
+            className={`conditionCard ${
+              item.active ? "activeCard" : "disabledCard"
+            }`}
+            onClick={() => {
+              if (item.active) navigate(item.route);
+            }}
+          >
 
-      <h3>Physiology Tips</h3>
-      <ul>
-        <li>Stay hydrated during workouts 💧</li>
-        <li>Maintain proper breathing 🫁</li>
-        <li>Take rest between sets 💤</li>
-      </ul>
+            <div className="conditionIcon">
+              {item.icon}
+            </div>
+
+            <h3>{item.title}</h3>
+
+            <p>
+              {item.active
+                ? "Start Assessment"
+                : "Coming Soon"}
+            </p>
+
+          </div>
+
+        ))}
+
+      </div>
+
     </div>
   );
 }
+
+export default Physiology;

@@ -1,0 +1,101 @@
+.physiologyPage{
+
+    padding:40px;
+
+    min-height:100vh;
+
+    background:#f7f9fc;
+
+}
+
+.physiologyPage h1{
+
+    text-align:center;
+
+    color:#ff6b81;
+
+    font-size:42px;
+
+}
+
+.physiologyPage p{
+
+    text-align:center;
+
+    color:#666;
+
+    margin-bottom:40px;
+
+}
+
+.conditionGrid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+    gap:25px;
+
+}
+
+.conditionCard{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:35px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.conditionCard:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.conditionIcon{
+
+    font-size:55px;
+
+    margin-bottom:20px;
+
+}
+
+.activeCard{
+
+    border:3px solid #ff6b81;
+
+}
+
+.disabledCard{
+
+    opacity:.55;
+
+    cursor:not-allowed;
+
+}
+
+.conditionCard h3{
+
+    margin-bottom:10px;
+
+    color:#333;
+
+}
+
+.conditionCard p{
+
+    margin:0;
+
+    color:#888;
+
+}

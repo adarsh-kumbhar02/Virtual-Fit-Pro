@@ -78,22 +78,6 @@ html, body, #root {
 }
 
 /* ===============================
-   COUNTER
-================================= */
-.counter {
-  border-radius: 100%;
-  width: 150px;
-  height: 150px;
-  background: #ff899969 !important;
-  font-family: 'Rajdhani-Bold';
-  color: #ff8999;
-  font-weight: 1550;
-  font-size: 90px;
-  line-height: 150px;
-  text-align: center;
-}
-
-/* ===============================
    IMAGE + TEXT
 ================================= */
 .workout-Practice .workout_pose_image_container img {
@@ -233,31 +217,5 @@ gap:30px;
 justify-content:center;
 
 flex-wrap:wrap;
-
-}
-
-.counterCard{
-
-background:white;
-
-padding:20px;
-
-border-radius:18px;
-
-box-shadow:0 10px 30px rgba(0,0,0,.08);
-
-text-align:center;
-
-}
-
-.counterTitle{
-
-font-size:24px;
-
-font-weight:bold;
-
-margin-bottom:15px;
-
-color:#555;
 
 }

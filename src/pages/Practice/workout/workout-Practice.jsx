@@ -3,10 +3,14 @@ import { Pose } from "@mediapipe/pose";
 import React, { useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import AICoach from "../../../components/AICoach/AICoach";
+import WorkoutCamera from "../../../components/WorkoutCamera/WorkoutCamera";
+import WorkoutCounter from "../../../components/WorkoutCounter/WorkoutCounter";
+
+import ExerciseInfo from "../../../components/ExerciseInfo/ExerciseInfo";
 
 import * as poseAll from "@mediapipe/pose";
 import * as cam from "@mediapipe/camera_utils";
-import Webcam from "react-webcam";
+
 import { workoutImages } from "../../../workoutposedata/workoutImages";
 import { workoutInstructions } from "../../../workoutposedata/workoutInstructions";
 import useState from "react-usestateref";
@@ -106,7 +110,6 @@ function workout_Practice() {
     exercise_pack.at(0).name
   );
   const [prevPose, setPrevPose, prevPoseRef] = useState();
-  const [toggleImage, setToggleImage] = useState(true);
   const [showMessage, setShowMessage] = useState(true);
 
   const [feedback, setFeedback] = useState("");
@@ -373,37 +376,14 @@ function workout_Practice() {
 
     <div className="leftPanel">
 
-        <div className="workout_camera_and_canvas">
+        <WorkoutCamera
+            webcamRef={webcamRef}
+            canvasRef={canvasRef}
+        />
 
-            <Webcam
-                ref={webcamRef}
-                width="640px"
-                height="480px"
-            />
-
-            <div className="workout_canvas_container">
-
-                <canvas
-                    ref={canvasRef}
-                    width="640px"
-                    height="480px"
-                ></canvas>
-
-            </div>
-
-        </div>
-
-        <div className="counterCard">
-
-            <div className="counterTitle">
-                Repetitions
-            </div>
-
-            <div className="counter">
-                {counter}
-            </div>
-
-        </div>
+        <WorkoutCounter
+            counter={counter}
+        />
 
     </div>
 
@@ -430,32 +410,11 @@ function workout_Practice() {
 </div>
 
 
-<div className="bottomSection">
-
-    <div className="workout_pose_image_container">
-
-        <img
-            alt=""
-            src={
-                workoutImages[currentPose] ||
-                workoutImages[currentPose?.replace(/([A-Z])/g, " $1").trim()] ||
-                workoutImages["No Pose"]
-            }
-            onClick={() => setToggleImage(false)}
-        />
-
-    </div>
-
-    <div className="workout_pose_text_container">
-
-        <textarea
-            readOnly
-            value={workoutInstructions[currentPose]}
-        />
-
-    </div>
-
-</div>
+<ExerciseInfo
+    currentPose={currentPose}
+    workoutImages={workoutImages}
+    workoutInstructions={workoutInstructions}
+/>
     </div>
   );
 }

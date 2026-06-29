@@ -1,0 +1,107 @@
+.therapyPage{
+
+    min-height:100vh;
+
+    background:#f7f9fc;
+
+    padding:35px;
+
+}
+
+.therapyHeader{
+
+    text-align:center;
+
+    margin-bottom:35px;
+
+}
+
+.therapyHeader h1{
+
+    color:#ff6b81;
+
+    font-size:42px;
+
+}
+
+.therapyHeader p{
+
+    color:#666;
+
+}
+
+.therapyContainer{
+
+    display:grid;
+
+    grid-template-columns:300px 1fr 360px;
+
+    gap:25px;
+
+}
+
+.therapyCard{
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+    margin-bottom:20px;
+
+}
+
+.planInfo p{
+
+    margin:15px 0;
+
+}
+
+.cameraPlaceholder{
+
+    height:650px;
+
+    background:white;
+
+    border-radius:20px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:60px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+.cameraPlaceholder p{
+
+    font-size:30px;
+
+    margin-top:20px;
+
+}
+
+.cameraPlaceholder small{
+
+    color:#888;
+
+}
+
+@media(max-width:1200px){
+
+.therapyContainer{
+
+grid-template-columns:1fr;
+
+}
+
+}

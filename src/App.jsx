@@ -6,6 +6,9 @@ import Learn from "./pages/Learn/Learn";
 import Tutorials from "./pages/Tutorials/Tutorials";
 import { useState, useEffect } from "react";
 
+import LowerBackAssessment from "./pages/Physiology/LowerBackAssessment";
+import LowerBackRecommendation from "./pages/Physiology/LowerBackRecommendation";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SelectionPractice from "./pages/SelectionPractice/SelectionPractice";
 import loadable from "@loadable/component";
@@ -16,6 +19,8 @@ import AboutUs from "./pages/AboutUs/AboutUs";
 
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Container from "./components/Container/Container";
+
+import LowerBackTherapy from "./pages/Physiology/LowerBackTherapy";
 
 const WorkoutPractice = loadable(() =>
   import("./pages/Practice/workout/workout-Practice")
@@ -86,6 +91,27 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route
+  path="/lower-back-assessment"
+  element={
+    <PrivateRoute>
+      <Container>
+        <LowerBackAssessment />
+      </Container>
+    </PrivateRoute>
+  }
+/>
+
+<Route
+  path="/lower-back-recommendation"
+  element={
+    <PrivateRoute>
+      <Container>
+        <LowerBackRecommendation />
+      </Container>
+    </PrivateRoute>
+  }
+/>
 
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
@@ -141,6 +167,17 @@ function App() {
                 <PrivateRoute>
                   <Container>
                     <Dashboard />
+                  </Container>
+                </PrivateRoute>
+              }
+            />
+            
+            <Route
+              path="/lower-back-therapy"
+              element={
+                <PrivateRoute>
+                  <Container>
+                    <LowerBackTherapy />
                   </Container>
                 </PrivateRoute>
               }

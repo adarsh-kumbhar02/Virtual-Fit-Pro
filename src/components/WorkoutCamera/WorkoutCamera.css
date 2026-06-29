@@ -1,0 +1,15 @@
+.workout_camera_and_canvas{
+
+    position:relative;
+
+}
+
+.workout_canvas_container{
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+}
