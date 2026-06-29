@@ -2,6 +2,7 @@ import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { Pose } from "@mediapipe/pose";
 import React, { useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import AICoach from "../../../components/AICoach/AICoach";
 
 import * as poseAll from "@mediapipe/pose";
 import * as cam from "@mediapipe/camera_utils";
@@ -76,8 +77,29 @@ function workout_Practice() {
   let camera = null;
   let poseResults;
   let current_exercise;
-  let stage;
+  const stageRef = useRef("DOWN");
   let angle_deg;
+  const repEvaluatedRef = useRef(false);
+  const lastVoiceRef = useRef("");
+
+        const speakOnce = (text) => {
+            if (lastVoiceRef.current === text) return;
+
+            lastVoiceRef.current = text;
+
+            speechSynthesis.cancel();
+
+            const msg = new SpeechSynthesisUtterance(text);
+
+            msg.rate = 1;
+            msg.pitch = 1;
+
+            speechSynthesis.speak(msg);
+
+            setTimeout(() => {
+              lastVoiceRef.current = "";
+            }, 2000);
+          };
 
   const [counter, setCounter, counterRef] = useState(0);
   const [currentPose, setCurrentPose, currentPoseRef] = useState(
@@ -87,9 +109,26 @@ function workout_Practice() {
   const [toggleImage, setToggleImage] = useState(true);
   const [showMessage, setShowMessage] = useState(true);
 
-  // ⭐ NEW STATES
   const [feedback, setFeedback] = useState("");
   const [feedbackMsg, setFeedbackMsg] = useState("");
+  const [bodyAnalysis, setBodyAnalysis] = useState({
+  head: true,
+  shoulder: true,
+  back: true,
+  hip: true,
+  knee: true,
+  feet: true,
+});
+
+  const [currentAngle, setCurrentAngle] = useState(0);
+  const [currentStage, setCurrentStage] = useState("Waiting");
+
+  const [correctReps, setCorrectReps] = useState(0);
+  const [wrongReps, setWrongReps] = useState(0);
+
+  const workoutStart = useRef(Date.now());
+  const [timer, setTimer] = useState("00:00");
+ 
 
   const handleUpdate = async () => {
     try {
@@ -175,34 +214,94 @@ function workout_Practice() {
           poseResults[pose_landmark_3]
         );
 
-        // ⭐ SMART AI FEEDBACK
+        setCurrentAngle(Math.round(angle_deg));
+        setBodyAnalysis({
+
+  head:
+    Math.abs(poseResults[7].y - poseResults[8].y) < 0.08,
+
+  shoulder:
+    Math.abs(poseResults[11].y - poseResults[12].y) < 0.10,
+
+  back:
+    Math.abs(poseResults[11].z - poseResults[23].z) < 0.35,
+
+  hip:
+    Math.abs(poseResults[23].y - poseResults[24].y) < 0.10,
+
+  knee:
+    Math.abs(poseResults[25].y - poseResults[26].y) < 0.15,
+
+  feet:
+    Math.abs(poseResults[27].y - poseResults[28].y) < 0.12,
+
+});
+
+        //  SMART AI FEEDBACK
+       let isGoodForm = true;
         if (angle_deg > current_exercise.max_angle + 15) {
+
+          isGoodForm = false;
+
           setFeedback("wrong");
           setFeedbackMsg("❌ Arm not fully extended");
-          speak("Arm not fully extended");
-        } 
-        else if (angle_deg < current_exercise.min_angle - 15) {
+          speakOnce("Arm not fully extended");
+
+      }
+      else if (angle_deg < current_exercise.min_angle - 15) {
+
+          isGoodForm = false;
+
           setFeedback("wrong");
           setFeedbackMsg("❌ Elbow too forward");
-          speak("Elbow too forward");
-        } 
-        else if (Math.abs(poseResults[11].z - poseResults[23].z) > 0.4) {
+          speakOnce("Elbow too forward");
+
+      }
+      else if (Math.abs(poseResults[11].z - poseResults[23].z) > 0.4) {
+
+          isGoodForm = false;
+
           setFeedback("wrong");
           setFeedbackMsg("❌ Back not straight");
-          speak("Keep your back straight");
-        } 
-        else {
+          speakOnce("Keep your back straight");
+
+      }
+      else {
+
           setFeedback("good");
           setFeedbackMsg("✅ Good Form");
-        }
+
+      }
+
 
         // ⭐ REP LOGIC (UNCHANGED)
-        if (angle_deg > current_exercise.max_angle) stage = "down";
+        if (angle_deg > current_exercise.max_angle) {
+          stageRef.current = "DOWN";
+          setCurrentStage("DOWN");
+          repEvaluatedRef.current = false;
+        }
+        if (
+          angle_deg < current_exercise.min_angle &&
+          stageRef.current === "DOWN" &&
+          !repEvaluatedRef.current
+        ) {
 
-        if (angle_deg < current_exercise.min_angle && stage === "down") {
-          stage = "up";
+          stageRef.current = "UP";
+          setCurrentStage("UP");
+
           incrementCounter();
-          speak("Good rep");
+
+          repEvaluatedRef.current = true;
+
+          if (isGoodForm) {
+              setCorrectReps(prev => prev + 1);
+              speakOnce("Excellent repetition");
+          }
+          else {
+              setWrongReps(prev => prev + 1);
+              speakOnce("Please improve your posture");
+          }
+
         }
       } else {
         setShowMessage(true);
@@ -239,6 +338,19 @@ function workout_Practice() {
     }
   }, []);
 
+  useEffect(() => {
+  const interval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - workoutStart.current) / 1000);
+
+    const min = String(Math.floor(elapsed / 60)).padStart(2, "0");
+    const sec = String(elapsed % 60).padStart(2, "0");
+
+    setTimer(`${min}:${sec}`);
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, []);
+
   if (window.innerWidth < 640) return <RotateDevice />;
 
   return (
@@ -256,47 +368,94 @@ function workout_Practice() {
       </div>
 
       <div className="flexbox_container">
+
+    {/* LEFT PANEL */}
+
+    <div className="leftPanel">
+
         <div className="workout_camera_and_canvas">
-          <Webcam ref={webcamRef} width="640px" height="480px" />
-          <div className="workout_canvas_container">
-            <canvas ref={canvasRef} width="640px" height="480px"></canvas>
-          </div>
+
+            <Webcam
+                ref={webcamRef}
+                width="640px"
+                height="480px"
+            />
+
+            <div className="workout_canvas_container">
+
+                <canvas
+                    ref={canvasRef}
+                    width="640px"
+                    height="480px"
+                ></canvas>
+
+            </div>
+
         </div>
 
-        <div className="counter">{counter}</div>
-        <h2>{currentPose}</h2>
-        {/* ⭐ FEEDBACK UI */}
-        {feedback && (
-          <div className="feedback_box">
-            <h3>{feedbackMsg}</h3>
-            {feedback === "wrong" && (
-              <img src={workoutImages[currentPose]} width="200" alt="Correct Form"/>
-            )}
-          </div>
-        )}
+        <div className="counterCard">
 
-        {toggleImage ? (
-          <div className="workout_pose_image_container">
-            <img
-              alt=""
-              src={
-                    workoutImages[currentPose] ||
-                    workoutImages[currentPose?.replace(/([A-Z])/g, " $1").trim()] ||
-                    workoutImages["No Pose"]
-                  }
-              onClick={() => setToggleImage(false)}
-            />
-          </div>
-        ) : (
-          <div className="workout_pose_text_container">
-            <textarea
-              onClick={() => setToggleImage(true)}
-              value={workoutInstructions[currentPose]}
-              readOnly
-            />
-          </div>
-        )}
-      </div>
+            <div className="counterTitle">
+                Repetitions
+            </div>
+
+            <div className="counter">
+                {counter}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {/* RIGHT PANEL */}
+
+    <div className="rightPanel">
+
+        <AICoach
+          counter={counter}
+          feedback={feedback}
+          feedbackMsg={feedbackMsg}
+          currentPose={currentPose}
+          angle={currentAngle}
+          stage={currentStage}
+          timer={timer}
+          correctReps={correctReps}
+          wrongReps={wrongReps}
+          bodyAnalysis={bodyAnalysis}
+        />
+
+    </div>
+
+</div>
+
+
+<div className="bottomSection">
+
+    <div className="workout_pose_image_container">
+
+        <img
+            alt=""
+            src={
+                workoutImages[currentPose] ||
+                workoutImages[currentPose?.replace(/([A-Z])/g, " $1").trim()] ||
+                workoutImages["No Pose"]
+            }
+            onClick={() => setToggleImage(false)}
+        />
+
+    </div>
+
+    <div className="workout_pose_text_container">
+
+        <textarea
+            readOnly
+            value={workoutInstructions[currentPose]}
+        />
+
+    </div>
+
+</div>
     </div>
   );
 }
